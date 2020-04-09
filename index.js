@@ -10,10 +10,10 @@ const io = require('socket.io')(server);
 
 app.use(express.static(__dirname + '/assets/'));
 
-/*app.get('/',function(req, res, next){
-    moduleTest.a();
-    res.sendFile(__dirname + '/assets/views/index.html');
-});*/
+app.get('/connexion',function(req, res, next){
+    //moduleTest.a();
+    res.sendFile(__dirname + '/assets/views/connexion.html');
+});
 
 app.get('/',(req, res, next)=>{
     //let test = new Test();
