@@ -21,6 +21,10 @@ app.get('/',(req, res, next)=>{
     res.sendFile(__dirname + '/assets/views/index.html');
 });
 
+app.get('/test',function(req, res, next){
+    //moduleTest.a();
+    res.sendFile(__dirname + '/assets/views/test.html');
+});
 /*io.sockets.on('connection', (socket) =>{
     io.emit('Hello', 'A new connection on our website');
     socket.emit('Hello', 'Hello to you');

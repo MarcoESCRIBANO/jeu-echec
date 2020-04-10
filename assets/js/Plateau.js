@@ -70,8 +70,37 @@ class Jeu extends Plateau{
                 }
             }
         }
-        console.table(grille)
+        return grille
     }
+
+    affichageJoueur(){
+        let currentPlayer = document.getElementsByTagName("h3");
+        currentPlayer[0].innerHTML = "C'est au "+'<span id="player_number">'+this.getCurrentPlayer()+'</span>';
+        
+    }
+    
+
+    
+    affich(){
+        let grille = document.getElementById("morpion");
+        let cellules = grille.getElementsByTagName("td");
+        for(let cellule of cellules){
+            let numCase=cellule.getAttribute("data");
+            let ligne = Math.trunc((numCase-1)/8);
+            let colonne = (numCase-1)%8;
+            for (let i=0; i<8; i++){
+                for (let j=0; j<8; j++){
+                    if(i==ligne && j==colonne){
+                        if(this.show()[ligne][colonne]!=undefined){
+                            cellule.innerHTML=this.show()[ligne][colonne];
+                        }
+                    }
+                }
+            }
+        }
+        this.affichageJoueur();
+    }
+
     play(pièce,X,Y){
         if(pièce!=undefined){
             if(pièce.getPiècesCouleur()==this.currentPlayer){
@@ -216,11 +245,10 @@ class Jeu extends Plateau{
 
 let jeu = new Jeu();
 
-//let plateau = new Plateau();
-//console.log(jeu.getPièce(2,7).getPièceName());
 jeu.reset();
-console.log(jeu.getPièce(3,0).getPiècesName());
+/*console.log(jeu.getPièce(3,0).getPiècesName());
 jeu.show()
+jeu.affich()
 jeu.play(jeu.getPièce(1,1),1,3)
 jeu.show()
 jeu.play(jeu.getPièce(6,1),6,3)
@@ -246,5 +274,17 @@ jeu.show()
 jeu.play(jeu.getPièce(2,6),2,5)
 jeu.show()
 jeu.play(jeu.getPièce(1,4),2,5)
+
 jeu.show()
+jeu.showDeath()
+*/
+
+
+jeu.play(jeu.getPièce(1,1),1,3)
+jeu.play(jeu.getPièce(6,6),6,4)
+jeu.play(jeu.getPièce(1,3),1,4)
+jeu.play(jeu.getPièce(2,6),2,4)
+jeu.play(jeu.getPièce(1,4),2,5)
+jeu.play(jeu.getPièce(1,7),2,5)
+jeu.affich()
 jeu.showDeath()

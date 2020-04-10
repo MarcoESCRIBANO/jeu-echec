@@ -279,18 +279,32 @@ class Fou extends Pièces{
 class Pions extends Pièces{
     constructor(name,plateau,X,Y,couleur) {
         super(name,X,Y,couleur);
+        this.priseEnPassant=undefined;
         this.plateau = plateau;
     }
+    setPriseEnPassant(direction){
+        this.priseEnPassant=direction;
+    }
+
+    peutPrendreEnPassant(){
+        return this.priseEnPassant;
+    }
+
     getMouvPossibilité(){
         let mouvPossibilité = [];
         let x = this.getPiècesPosition()[0];
         let y = this.getPiècesPosition()[1];
-        //console.log(x,y,this.plateau.getPièce(x,y+1))
         if(this.couleur=="Blanc"){
-            if(!this.plateau.getPièce(x,y+1)!=undefined){
+            if(this.peutPrendreEnPassant()=="droite"){
+                mouvPossibilité.push([x+1,y+1]);
+            }
+            if(this.peutPrendreEnPassant()=="gauche"){
+                mouvPossibilité.push([x-1,y+1]);
+            }
+            if(this.plateau.getPièce(x,y+1)==undefined){
                 mouvPossibilité.push([x,y+1]);
             }
-            if(this.isFirstMouv() && !this.plateau.getPièce(x,y+2)!=undefined){
+            if(this.isFirstMouv() && this.plateau.getPièce(x,y+2)==undefined){
                 mouvPossibilité.push([x,y+2]);
             }
             if(this.plateau.getPièce(x+1,y+1)!=undefined && this.plateau.getPièce(x+1,y+1).getPiècesCouleur()!=this.couleur){
@@ -301,10 +315,16 @@ class Pions extends Pièces{
             }
         }
         else{
-            if(!this.plateau.getPièce(x,y-1)!=undefined){
+            if(this.peutPrendreEnPassant()=="droite"){
+                mouvPossibilité.push([x+1,y-1]);
+            }
+            if(this.peutPrendreEnPassant()=="gauche"){
+                mouvPossibilité.push([x-1,y-1]);
+            }
+            if(this.plateau.getPièce(x,y-1)==undefined){
                 mouvPossibilité.push([x,y-1]);
             }
-            if(this.isFirstMouv() && !this.plateau.getPièce(x,y-2)!=undefined){
+            if(this.isFirstMouv() && this.plateau.getPièce(x,y-2)==undefined){
                 mouvPossibilité.push([x,y-2]);
             }
             if(this.plateau.getPièce(x+1,y-1)!=undefined && this.plateau.getPièce(x+1,y-1).getPiècesCouleur()!=this.couleur){
@@ -322,6 +342,19 @@ class Pions extends Pièces{
             if(X==i[0] && Y==i[1]){
                 if(this.plateau.getPièce(X,Y)!=undefined){
                     this.plateau.newDeath(this.plateau.getPièce(X,Y));
+                }
+                if(Math.abs(Y-this.getPiècesPosition()[1])==2){
+                    if(X+1<8 && this.plateau.getPièce(X+1,Y)!=undefined && this.plateau.getPièce(X+1,Y).getPiècesName()=="Pions" && this.plateau.getPièce(X+1,Y).getPiècesCouleur()!=this.getPiècesCouleur()){
+                        this.plateau.getPièce(X+1,Y).setPriseEnPassant("gauche");
+                    }
+                    if(X-1>=0 && this.plateau.getPièce(X-1,Y)!=undefined && this.plateau.getPièce(X-1,Y).getPiècesName()=="Pions" && this.plateau.getPièce(X-1,Y).getPiècesCouleur()!=this.getPiècesCouleur()){
+                        this.plateau.getPièce(X-1,Y).setPriseEnPassant("droite");
+                    }
+                }
+                if(this.peutPrendreEnPassant()!=undefined){
+                    this.plateau.newDeath(this.plateau.getPièce(X,Y-1));
+                    this.plateau.setCase(X,Y-1,undefined);
+                    this.setPriseEnPassant(undefined);
                 }
                 this.plateau.setCase(this.getPiècesPosition()[0],this.getPiècesPosition()[1],undefined);
                 this.setPiècesPosition(X,Y);
