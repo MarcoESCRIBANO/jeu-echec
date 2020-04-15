@@ -14,6 +14,12 @@ class Plateau {
     newDeath(pièce){
         this.mort.push(pièce);
     }
+    resetDeath(){
+        this.mort=[];
+    }
+    notDeath(){
+        return this.mort.pop();
+    }
     showDeath(){
         console.log(this.mort);
     }
@@ -56,7 +62,9 @@ class Plateau {
 class Jeu extends Plateau{
     constructor(){
         super();
-        this.currentPlayer=0;
+        this.currentPlayer="Blanc";
+        this.positionRB=[4,0];
+        this.positionRN=[4,7];
     }
     show(){
         let grille = new Array(8);
@@ -79,9 +87,7 @@ class Jeu extends Plateau{
         
     }
     
-
-    
-    affich(){
+    affichBlanc(){
         let grille = document.getElementById("morpion");
         let cellules = grille.getElementsByTagName("td");
         for(let cellule of cellules){
@@ -91,8 +97,8 @@ class Jeu extends Plateau{
             for (let i=0; i<8; i++){
                 for (let j=0; j<8; j++){
                     if(i==ligne && j==colonne){
-                        if(this.show()[ligne][colonne]!=undefined){
-                            cellule.innerHTML=this.show()[ligne][colonne];
+                        if(this.show()[i][j]!=undefined){
+                            cellule.innerHTML=this.show()[i][j];
                         }
                     }
                 }
@@ -101,19 +107,176 @@ class Jeu extends Plateau{
         this.affichageJoueur();
     }
 
+    affichNoir(){
+        let grille = document.getElementById("morpion");
+        let cellules = grille.getElementsByTagName("td");
+        for(let cellule of cellules){
+            let numCase=cellule.getAttribute("data");
+            let ligne = Math.trunc((numCase-1)/8);
+            let colonne = (numCase-1)%8;
+            for (let i=7; i>=0; i--){
+                for (let j=7; j>=0; j--){
+                    if(7-i==ligne && 7-j==colonne){
+                        if(this.show()[i][j]!=undefined){
+                            cellule.innerHTML=this.show()[i][j];
+                        }
+                    }
+                }
+            }
+        }
+        this.affichageJoueur();
+    }
+
+    newRoiPosition(X,Y){
+        if(this.currentPlayer=="Blanc"){
+            this.positionRB[0]=X;
+            this.positionRB[1]=Y;
+        }
+        else{
+            this.positionRN[0]=X;
+            this.positionRN[1]=Y;
+        }
+    }
+
+    getRoiPosition(couleur){
+        if(couleur=="Blanc"){
+            return this.positionRB;
+        }
+        else{
+            return this.positionRN;
+        }
+    }
+
+    enEchec(x,y,couleur){
+        let mouvPossibilité = [];
+        let i=y-1;
+        while(i>=0 && this.getPièce(x,i)==undefined){
+            i--;
+        }
+        if(i>=0 && this.getPièce(x,i).getPiècesCouleur()!=couleur && (this.getPièce(x,i).getPiècesName()=="Tour" || this.getPièce(x,i).getPiècesName()=="Reine" || (Math.abs(y-i)==1 && this.getPièce(x,i).getPiècesName()=="Roi"))){
+            mouvPossibilité.push([x,i]);
+            return true;
+        }
+        i=y+1;
+        while(i<8 && this.getPièce(x,i)==undefined){
+            i++;
+        }
+        if(i<8 && this.getPièce(x,i).getPiècesCouleur()!=couleur && (this.getPièce(x,i).getPiècesName()=="Tour" || this.getPièce(x,i).getPiècesName()=="Reine" || (Math.abs(y-i)==1 && this.getPièce(x,i).getPiècesName()=="Roi"))){
+            mouvPossibilité.push([x,i]);
+            return true;
+        }    
+        i=x-1;
+        while(i>=0 && this.getPièce(i,y)==undefined){
+            i--;
+        }
+        if(i>=0 && this.getPièce(i,y).getPiècesCouleur()!=couleur && (this.getPièce(i,y).getPiècesName()=="Tour" || this.getPièce(i,y).getPiècesName()=="Reine" || (Math.abs(x-i)==1 && this.getPièce(i,y).getPiècesName()=="Roi"))){
+            mouvPossibilité.push([i,y]);
+            return true;
+        }
+        i=x+1;
+        while(i<8 && this.getPièce(i,y)==undefined){
+            i++;
+        }
+        if(i<8 && this.getPièce(i,y).getPiècesCouleur()!=couleur && (this.getPièce(i,y).getPiècesName()=="Tour" || this.getPièce(i,y).getPiècesName()=="Reine" || (Math.abs(x-i)==1 && this.getPièce(i,y).getPiècesName()=="Roi"))){
+            mouvPossibilité.push([i,y]);
+            return true;
+        }
+        i=-1;
+        while(x-i<8 && y+i>=0 && this.getPièce(x-i,y+i)==undefined){
+            i--;
+        }
+        if(x-i<8 && y+i>=0 && this.getPièce(x-i,y+i).getPiècesCouleur()!=couleur && (this.getPièce(x-i,y+i).getPiècesName()=="Fou" || this.getPièce(x-i,y+i).getPiècesName()=="Reine" || (Math.abs(i)==1 && (this.getPièce(x-i,y+i).getPiècesName()=="Roi" || (this.getPièce(x-i,y+i).getPiècesName()=="Pion" && couleur=="Noir"))))){
+            mouvPossibilité.push([x-i,y+i]);
+            return true;
+        }
+        i=-1;
+        while(x+i>=0 && y+i>=0 && this.getPièce(x+i,y+i)==undefined){
+            i--;
+        }
+        if(x+i>=0 && y+i>=0 && this.getPièce(x+i,y+i).getPiècesCouleur()!=couleur && (this.getPièce(x+i,y+i).getPiècesName()=="Fou" || this.getPièce(x+i,y+i).getPiècesName()=="Reine" || (Math.abs(i)==1 && (this.getPièce(x+i,y+i).getPiècesName()=="Roi" || (this.getPièce(x+i,y+i).getPiècesName()=="Pion" && couleur=="Noir"))))){
+            mouvPossibilité.push([x+i,y+i]);
+            return true;
+        }
+        i=1;
+        while(x-i>=0 && y+i<8 && this.getPièce(x-i,y+i)==undefined ){
+            i++;
+        }
+        if(x-i>=0 && y+i<8 && this.getPièce(x-i,y+i).getPiècesCouleur()!=couleur && (this.getPièce(x-i,y+i).getPiècesName()=="Fou" || this.getPièce(x-i,y+i).getPiècesName()=="Reine" || (Math.abs(i)==1 && (this.getPièce(x-i,y+i).getPiècesName()=="Roi" || (this.getPièce(x-i,y+i).getPiècesName()=="Pion" && couleur=="Blanc"))))){
+            mouvPossibilité.push([x-i,y+i]);
+            return true;
+        }
+        i=1;
+        while(x+i<8 && y+i<8 && this.getPièce(x+i,y+i)==undefined ){
+            i++;
+        }
+        if(x+i<8 && y+i<8 && this.getPièce(x+i,y+i).getPiècesCouleur()!=couleur && (this.getPièce(x+i,y+i).getPiècesName()=="Fou" || this.getPièce(x+i,y+i).getPiècesName()=="Reine" || (Math.abs(i)==1 && (this.getPièce(x+i,y+i).getPiècesName()=="Roi" || (this.getPièce(x+i,y+i).getPiècesName()=="Pion" && couleur=="Blanc"))))){
+            mouvPossibilité.push([x+i,y+i]);
+            return true;
+        }
+
+        if(x+1<8 && y+2<8 && this.getPièce(x+1,y+2)!=undefined && this.getPièce(x+1,y+2).getPiècesCouleur()!=couleur && this.getPièce(x+1,y+2).getPiècesName()=="Cavalier"){
+            mouvPossibilité.push([x+1,y+2]);
+            return true;
+        }
+        if(x-1>=0 && y+2<8 && this.getPièce(x-1,y+2)!=undefined && this.getPièce(x-1,y+2).getPiècesCouleur()!=couleur && this.getPièce(x-1,y+2).getPiècesName()=="Cavalier"){
+            mouvPossibilité.push([x-1,y+2]);
+            return true;
+        }
+        if(x+1<8 && y-2>=0 && this.getPièce(x+1,y-2)!=undefined && this.getPièce(x+1,y-2).getPiècesCouleur()!=couleur && this.getPièce(x+1,y-2).getPiècesName()=="Cavalier"){
+            mouvPossibilité.push([x+1,y-2]);
+            return true;
+        }
+        if(x-1>=0 && y-2>=0 && this.getPièce(x-1,y-2)!=undefined && this.getPièce(x-1,y-2).getPiècesCouleur()!=couleur && this.getPièce(x-1,y-2).getPiècesName()=="Cavalier"){
+            mouvPossibilité.push([x-1,y-2]);
+            return true;
+        }
+        if(x+2<8 && y+1<8 && this.getPièce(x+2,y+1)!=undefined && this.getPièce(x+2,y+1).getPiècesCouleur()!=couleur && this.getPièce(x+2,y+1).getPiècesName()=="Cavalier"){
+            mouvPossibilité.push([x+2,y+1]);
+            return true;
+        }
+        if(x-2>=0 && y+1<8 && this.getPièce(x-2,y+1)!=undefined && this.getPièce(x-2,y+1).getPiècesCouleur()!=couleur && this.getPièce(x-2,y+1).getPiècesName()=="Cavalier"){
+            mouvPossibilité.push([x-2,y+1]);
+            return true;
+        }
+        if(x+2<8 && y-1>=0 && this.getPièce(x+2,y-1)!=undefined && this.getPièce(x+2,y-1).getPiècesCouleur()!=couleur && this.getPièce(x+2,y-1).getPiècesName()=="Cavalier"){
+            mouvPossibilité.push([x+2,y-1]);
+            return true;
+        }
+        if(x-2>=0 && y-1>=0 && this.getPièce(x-2,y-1)!=undefined && this.getPièce(x-2,y-1).getPiècesCouleur()!=couleur && this.getPièce(x-2,y-1).getPiècesName()=="Cavalier"){
+            mouvPossibilité.push([x-2,y-1]);
+            return true;
+        }
+        return false;
+    }
+
     play(pièce,X,Y){
         if(pièce!=undefined){
             if(pièce.getPiècesCouleur()==this.currentPlayer){
-                pièce.Mouv(X,Y);
-                if(this.currentPlayer=="Blanc"){
-                    this.currentPlayer="Noir";
-                }
-                else{
-                    this.currentPlayer="Blanc";
+                if(pièce.Mouv(X,Y)){
+                    if(pièce.getPiècesName()=="Roi"){
+                        this.newRoiPosition(X,Y);
+                    }
+                    if(this.currentPlayer=="Blanc"){
+                        this.currentPlayer="Noir";
+                    }
+                    else{
+                        this.currentPlayer="Blanc";
+                    }
+                    
+                    if(this.mat()=="matBlanc"){
+                        console.log("echec et mat les Noir ont gagné");
+                    }
+                    else if(this.mat()=="matNoir"){
+                        console.log("echec et mat les Blanc ont gagné");
+                    }
+                    if(this.pat() && this.mat()!="matBlanc" && this.mat()!="matNoir"){
+                        console.log("match nul")
+                    }
                 }
             }
         }
     }
+
     reset(){
         let couleur = "Blanc";
         for(let j=0; j<8; j++){
@@ -180,13 +343,47 @@ class Jeu extends Plateau{
         }
         this.currentPlayer="Blanc";
     }
+
     getCurrentPlayer(){
         return  this.currentPlayer;
     }
-    getPièceState(X,Y){
-        return this.grid[X][Y];
+
+    pat(){
+        let patBlanc = true;
+        let patNoir = true;
+        for(let i = 0; i<8; i++){
+            for(let j = 0; j<8; j++){
+                if(this.getPièce(j,i)!=undefined){
+                    for(let u of this.getPièce(j,i).getMouvPossibilité()){
+                        if(this.getPièce(j,i).testMouv(u[0],u[1])){
+                            if(this.getPièce(j,i).getPiècesCouleur()=="Blanc"){
+                                patBlanc=false;
+                            }
+                            else{
+                                patNoir=false;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        if(patBlanc||patNoir){
+            return true;
+        }
+        return false;
     }
-    isFinished(){
+
+    mat(){
+        if(this.enEchec(this.getRoiPosition("Blanc")[0],this.getRoiPosition("Blanc")[1],"Blanc") && this.pat()){
+            return "matBlanc";
+        }
+        else if(this.enEchec(this.getRoiPosition("Noir")[0],this.getRoiPosition("Noir")[1],"Noir") && this.pat()){
+            return "matNoir";
+        }
+
+    }
+
+    /*isFinished(){
         let finished = true;
         if(this.getPièceState(0, 0)!=undefined && this.getPièceState(0, 0)==this.getPièceState(1, 1) && this.getPièceState(0, 0)==this.getPièceState(2, 2)){ 
             return true;
@@ -240,51 +437,98 @@ class Jeu extends Plateau{
         else{
             return undefined;
         }
-    }
+    }*/
 }
 
 let jeu = new Jeu();
 
 jeu.reset();
-/*console.log(jeu.getPièce(3,0).getPiècesName());
-jeu.show()
-jeu.affich()
-jeu.play(jeu.getPièce(1,1),1,3)
-jeu.show()
-jeu.play(jeu.getPièce(6,1),6,3)
-jeu.show()
-jeu.play(jeu.getPièce(6,6),6,4)
-jeu.show()
-jeu.play(jeu.getPièce(1,3),1,4)
-jeu.show()
-jeu.play(jeu.getPièce(1,0),0,2)
-jeu.show()
-jeu.play(jeu.getPièce(2,0),1,1)
-jeu.show()
-jeu.play(jeu.getPièce(1,1),7,7)
-jeu.show()
-jeu.play(jeu.getPièce(7,7),3,3)
-jeu.show()
-jeu.play(jeu.getPièce(3,3),5,1)
-jeu.show()
-jeu.play(jeu.getPièce(2,1),2,3)
-jeu.show()
-jeu.play(jeu.getPièce(2,3),1,4)
-jeu.show()
-jeu.play(jeu.getPièce(2,6),2,5)
-jeu.show()
-jeu.play(jeu.getPièce(1,4),2,5)
 
-jeu.show()
-jeu.showDeath()
-*/
 
 
 jeu.play(jeu.getPièce(1,1),1,3)
+//jeu.pat()
 jeu.play(jeu.getPièce(6,6),6,4)
+//jeu.pat()
 jeu.play(jeu.getPièce(1,3),1,4)
+//jeu.pat()
 jeu.play(jeu.getPièce(2,6),2,4)
+//jeu.pat()
 jeu.play(jeu.getPièce(1,4),2,5)
+//jeu.pat()
 jeu.play(jeu.getPièce(1,7),2,5)
-jeu.affich()
+//jeu.pat()
+jeu.play(jeu.getPièce(2,0),1,1)
+//jeu.pat()
+jeu.play(jeu.getPièce(5,7),6,6)
+//jeu.pat()
+jeu.play(jeu.getPièce(1,1),6,6)
+//jeu.pat()
+jeu.play(jeu.getPièce(3,7),0,4)
+//jeu.pat()
+jeu.play(jeu.getPièce(0,1),0,2)
+//jeu.pat()
+jeu.play(jeu.getPièce(2,5),4,4)
+//jeu.pat()
+jeu.play(jeu.getPièce(0,2),0,3)
+//jeu.pat()
+jeu.play(jeu.getPièce(4,4),5,2)
+//jeu.pat()
+jeu.play(jeu.getPièce(4,1),5,2)
+//jeu.pat()
+jeu.play(jeu.getPièce(0,4),4,4)
+//jeu.pat()
+jeu.play(jeu.getPièce(5,0),4,1)
+//jeu.pat()
+//console.log("test")
+jeu.play(jeu.getPièce(4,4),4,1)
+jeu.play(jeu.getPièce(6,0),4,1)
+jeu.play(jeu.getPièce(6,4),6,3)
+jeu.play(jeu.getPièce(6,6),7,7)
+jeu.play(jeu.getPièce(6,3),5,2)
+jeu.play(jeu.getPièce(0,0),0,2)
+jeu.play(jeu.getPièce(5,2),4,1)
+jeu.play(jeu.getPièce(0,2),2,2)
+jeu.play(jeu.getPièce(6,7),5,5)
+jeu.play(jeu.getPièce(2,2),2,7)
+jeu.play(jeu.getPièce(0,7),2,7)
+jeu.play(jeu.getPièce(7,7),5,5)
+jeu.play(jeu.getPièce(2,7),2,1)
+jeu.play(jeu.getPièce(5,5),4,6)
+jeu.play(jeu.getPièce(2,1),3,1)
+jeu.play(jeu.getPièce(0,3),0,4)
+jeu.play(jeu.getPièce(1,6),1,4)
+jeu.play(jeu.getPièce(0,4),1,5)
+jeu.play(jeu.getPièce(0,6),1,5)
+jeu.play(jeu.getPièce(4,6),2,4)
+jeu.play(jeu.getPièce(1,5),2,4)
+jeu.play(jeu.getPièce(3,0),4,1)
+jeu.play(jeu.getPièce(4,7),3,7)
+jeu.play(jeu.getPièce(4,1),7,4)
+jeu.play(jeu.getPièce(3,1),5,1)
+jeu.play(jeu.getPièce(7,4),7,6)
+jeu.play(jeu.getPièce(5,1),6,1)
+jeu.play(jeu.getPièce(1,0),3,1)
+jeu.play(jeu.getPièce(6,1),7,1)
+jeu.play(jeu.getPièce(7,6),5,6)
+jeu.play(jeu.getPièce(7,1),3,1)
+jeu.play(jeu.getPièce(4,0),3,1)
+jeu.play(jeu.getPièce(2,4),2,3)
+//echec et mat
+jeu.play(jeu.getPièce(7,0),7,6)
+jeu.play(jeu.getPièce(3,6),3,4)
+jeu.play(jeu.getPièce(5,6),3,6)
+
+/*jeu.play(jeu.getPièce(7,0),7,2)
+jeu.play(jeu.getPièce(3,6),3,4)
+jeu.play(jeu.getPièce(7,2),3,2)
+jeu.play(jeu.getPièce(2,3),3,2)
+jeu.play(jeu.getPièce(3,1),3,2)
+jeu.play(jeu.getPièce(3,7),2,7)
+jeu.play(jeu.getPièce(5,6),3,4)
+jeu.play(jeu.getPièce(2,7),1,7)
+/*jeu.play(jeu.getPièce(3,4),2,4)
+jeu.play(jeu.getPièce(1,7),0,7)
+jeu.play(jeu.getPièce(2,4),1,5)*/
+jeu.affichBlanc()
 jeu.showDeath()
