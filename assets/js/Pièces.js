@@ -67,6 +67,8 @@ class Roi extends Pièces{
         let mouvPossibilité = [];
         let x = this.getPiècesPosition()[0];
         let y = this.getPiècesPosition()[1];
+        let grandRoque = true;
+        let petitRoque = true;
         for(let i=x-1; i<=x+1; i++){
             for(let j=y-1; j<=y+1; j++){
                 if(j!=y && i>=0 && i<8 && j>=0 && j<8){
@@ -91,6 +93,22 @@ class Roi extends Pièces{
                 }
             }
         }
+        for(let u = this.getPiècesPosition()[0]-1; u>0; u--){
+            if(this.plateau.getPièce(u,this.getPiècesPosition()[1])!=undefined){
+                grandRoque = false;
+            }
+        }
+        for(let v = this.getPiècesPosition()[0]+1; v<7; v++){
+            if(this.plateau.getPièce(v,this.getPiècesPosition()[1])!=undefined){
+                petitRoque = false;
+            }
+        }
+        if(!this.plateau.enEchec(this.getPiècesPosition()[0],this.getPiècesPosition()[1],this.getPiècesCouleur()) && this.isFirstMouv() && this.plateau.getPièce(this.getPiècesPosition()[0]-4,this.getPiècesPosition()[1])!=undefined && this.plateau.getPièce(this.getPiècesPosition()[0]-4,this.getPiècesPosition()[1]).isFirstMouv() && !this.plateau.enEchec(this.getPiècesPosition()[0]-1,this.getPiècesPosition()[1],this.getPiècesCouleur()) && grandRoque){
+            mouvPossibilité.push([this.getPiècesPosition()[0]-2,this.getPiècesPosition()[1]]);
+        }
+        if(!this.plateau.enEchec(this.getPiècesPosition()[0],this.getPiècesPosition()[1],this.getPiècesCouleur()) && this.isFirstMouv() && this.plateau.getPièce(this.getPiècesPosition()[0]+3,this.getPiècesPosition()[1])!=undefined && this.plateau.getPièce(this.getPiècesPosition()[0]+3,this.getPiècesPosition()[1]).isFirstMouv() && !this.plateau.enEchec(this.getPiècesPosition()[0]+1,this.getPiècesPosition()[1],this.getPiècesCouleur()) && petitRoque){
+            mouvPossibilité.push([this.getPiècesPosition()[0]+2,this.getPiècesPosition()[1]]);
+        }
         return mouvPossibilité;
     }
 
@@ -101,14 +119,35 @@ class Roi extends Pièces{
         }
         else{
             for(let i of this.getMouvPossibilité()){
+                
                 if(X==i[0] && Y==i[1]){
-                    if(this.plateau.getPièce(X,Y)!=undefined){
-                        this.plateau.newDeath(this.plateau.getPièce(X,Y));
+                    if(this.getPiècesPosition()[0]-2==X){
+                        let tmpPiece = this.plateau.getPièce(this.getPiècesPosition()[0]-4,this.getPiècesPosition()[1]);
+                        this.plateau.setCase(this.getPiècesPosition()[0],this.getPiècesPosition()[1],undefined);
+                        this.setPiècesPosition(X,Y);
+                        this.plateau.setCase(X,Y,this);
+                        this.plateau.setCase(tmpPiece.getPiècesPosition()[0],tmpPiece.getPiècesPosition()[1],undefined);
+                        tmpPiece.setPiècesPosition(X+1,Y);
+                        this.plateau.setCase(X+1,Y,tmpPiece);
                     }
-                    this.plateau.setCase(this.getPiècesPosition()[0],this.getPiècesPosition()[1],undefined);
-                    this.setPiècesPosition(X,Y);
-                    this.plateau.setCase(X,Y,this);
-                    return true;
+                    else if(this.getPiècesPosition()[0]+2==X){
+                        let tmpPiece = this.plateau.getPièce(this.getPiècesPosition()[0]+3,this.getPiècesPosition()[1]);
+                        this.plateau.setCase(this.getPiècesPosition()[0],this.getPiècesPosition()[1],undefined);
+                        this.setPiècesPosition(X,Y);
+                        this.plateau.setCase(X,Y,this);
+                        this.plateau.setCase(tmpPiece.getPiècesPosition()[0],tmpPiece.getPiècesPosition()[1],undefined);
+                        tmpPiece.setPiècesPosition(X-1,Y);
+                        this.plateau.setCase(X-1,Y,tmpPiece);
+                    }
+                    else{
+                        if(this.plateau.getPièce(X,Y)!=undefined){
+                            this.plateau.newDeath(this.plateau.getPièce(X,Y));
+                        }
+                        this.plateau.setCase(this.getPiècesPosition()[0],this.getPiècesPosition()[1],undefined);
+                        this.setPiècesPosition(X,Y);
+                        this.plateau.setCase(X,Y,this);
+                        return true;
+                    }
                 }
             }
         }

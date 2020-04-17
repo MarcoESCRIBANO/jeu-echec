@@ -50,10 +50,10 @@ class Plateau {
     }
     getCaseCouleur(X,Y){
         if((X+Y)%2==0){
-            return "Noir";
+            return "Blanche";
         }
         else{
-            return "Blanche";
+            return "Noir";
         }
     }
 }
@@ -74,58 +74,19 @@ class Jeu extends Plateau{
         for (let i=0; i<8; i++) {
             for (let j=0; j<8; j++) {
                 if(this.getPièce(i,j)!=undefined){
-                    grille[7-j][i]=this.getPièce(i,j).getPiècesName()+"/"+this.getPièce(i,j).getPiècesCouleur()
+                    grille[7-j][i]={piece:this.getPièce(i,j).getPiècesName(),
+                        couleur:this.getPièce(i,j).getPiècesCouleur()}
                 }
             }
         }
         return grille
     }
 
-    affichageJoueur(){
-        let currentPlayer = document.getElementsByTagName("h3");
-        currentPlayer[0].innerHTML = "C'est au "+'<span id="player_number">'+this.getCurrentPlayer()+'</span>';
-        
-    }
-    
-    affichBlanc(){
-        let grille = document.getElementById("morpion");
-        let cellules = grille.getElementsByTagName("td");
-        for(let cellule of cellules){
-            let numCase=cellule.getAttribute("data");
-            let ligne = Math.trunc((numCase-1)/8);
-            let colonne = (numCase-1)%8;
-            for (let i=0; i<8; i++){
-                for (let j=0; j<8; j++){
-                    if(i==ligne && j==colonne){
-                        if(this.show()[i][j]!=undefined){
-                            cellule.innerHTML=this.show()[i][j];
-                        }
-                    }
-                }
-            }
-        }
-        this.affichageJoueur();
-    }
 
-    affichNoir(){
-        let grille = document.getElementById("morpion");
-        let cellules = grille.getElementsByTagName("td");
-        for(let cellule of cellules){
-            let numCase=cellule.getAttribute("data");
-            let ligne = Math.trunc((numCase-1)/8);
-            let colonne = (numCase-1)%8;
-            for (let i=7; i>=0; i--){
-                for (let j=7; j>=0; j--){
-                    if(7-i==ligne && 7-j==colonne){
-                        if(this.show()[i][j]!=undefined){
-                            cellule.innerHTML=this.show()[i][j];
-                        }
-                    }
-                }
-            }
-        }
-        this.affichageJoueur();
-    }
+    
+
+
+
 
     newRoiPosition(X,Y){
         if(this.currentPlayer=="Blanc"){
@@ -272,9 +233,11 @@ class Jeu extends Plateau{
                     if(this.pat() && this.mat()!="matBlanc" && this.mat()!="matNoir"){
                         console.log("match nul")
                     }
+                    return true;
                 }
             }
         }
+        return false;
     }
 
     reset(){
@@ -383,109 +346,95 @@ class Jeu extends Plateau{
 
     }
 
-    /*isFinished(){
-        let finished = true;
-        if(this.getPièceState(0, 0)!=undefined && this.getPièceState(0, 0)==this.getPièceState(1, 1) && this.getPièceState(0, 0)==this.getPièceState(2, 2)){ 
+    isFinished(){
+        if(this.mat()=="matNoir"|| this.mat()=="matBlanc" || this.pat()){
             return true;
         }
-        if(this.getPièceState(0, 2)!=undefined && this.getPièceState(0, 2)==this.getPièceState(1, 1) && this.getPièceState(0, 2)==this.getPièceState(2, 0)){
-            return true;
+        else{
+            return false;
         }
-        for(let x = 0; x < 3; ++x) {
-            if(this.getPièceState(x, 0)!=undefined && this.getPièceState(x, 0)==this.getPièceState(x, 1) && this.getPièceState(x, 0)==this.getPièceState(x, 2)){
-                return true;
-            }
-            if(this.getPièceState(0, x)!=undefined && this.getPièceState(0, x)==this.getPièceState(1, x) && this.getPièceState(0, x)==this.getPièceState(2, x)){
-                return true;
-            }
-            for(let y = 0; y < 3; ++y) {
-                if(this.getPièceState(x, y) == undefined){
-                    finished = false;
-                }
-            }
-        }
-        
-        return finished;
     }
     hasWinner(){
-        if(this.isFinished()){
-            if(this.getPièceState(0, 0)!=undefined && this.getPièceState(0, 0)==this.getPièceState(1, 1) && this.getPièceState(0, 0)==this.getPièceState(2, 2)){
-                this.currentPlayer=this.getPièceState(0, 0);
-                return true;
-            }
-            if(this.getPièceState(0, 2)!=undefined && this.getPièceState(0, 2)==this.getPièceState(1, 1) && this.getPièceState(0, 2)==this.getPièceState(2, 0)){
-                this.currentPlayer=this.getPièceState(0, 2);
-                return true;
-            }
-            for(let x = 0; x < 3; ++x) {
-                if(this.getPièceState(x, 0)!=undefined && this.getPièceState(x, 0)==this.getPièceState(x, 1) && this.getPièceState(x, 0)==this.getPièceState(x, 2)){
-                    this.currentPlayer=this.getPièceState(x, 0);
-                    return true;
-                }
-                if(this.getPièceState(0, x)!=undefined && this.getPièceState(0, x)==this.getPièceState(1, x) && this.getPièceState(0, x)==this.getPièceState(2, x)){
-                    this.currentPlayer=this.getPièceState(0, x);
-                    return true;
-                }
-            }
+        if(this.isFinished() && !this.pat()){
+            return true;
         }
-        return false;
+        else{
+            return false;
+        }
     }
     getWinner(){
         if(this.hasWinner()){
-            return this.currentPlayer;
+            if(this.mat()=="matBlanc"){
+                return "Blanc";
+            }
+            else{
+                return "Noir";
+            }
         }
         else{
             return undefined;
         }
-    }*/
+    }
 }
+/*
 
 let jeu = new Jeu();
 
 jeu.reset();
-
+console.log(jeu.play(jeu.getPièce(6,6),6,5))
 
 
 jeu.play(jeu.getPièce(1,1),1,3)
-//jeu.pat()
+
 jeu.play(jeu.getPièce(6,6),6,4)
-//jeu.pat()
+
 jeu.play(jeu.getPièce(1,3),1,4)
-//jeu.pat()
+
 jeu.play(jeu.getPièce(2,6),2,4)
-//jeu.pat()
+
 jeu.play(jeu.getPièce(1,4),2,5)
-//jeu.pat()
+
 jeu.play(jeu.getPièce(1,7),2,5)
-//jeu.pat()
+
 jeu.play(jeu.getPièce(2,0),1,1)
-//jeu.pat()
+
 jeu.play(jeu.getPièce(5,7),6,6)
-//jeu.pat()
+
 jeu.play(jeu.getPièce(1,1),6,6)
-//jeu.pat()
+
 jeu.play(jeu.getPièce(3,7),0,4)
-//jeu.pat()
+
 jeu.play(jeu.getPièce(0,1),0,2)
-//jeu.pat()
+
 jeu.play(jeu.getPièce(2,5),4,4)
-//jeu.pat()
+
 jeu.play(jeu.getPièce(0,2),0,3)
-//jeu.pat()
+
 jeu.play(jeu.getPièce(4,4),5,2)
-//jeu.pat()
+
 jeu.play(jeu.getPièce(4,1),5,2)
-//jeu.pat()
+
 jeu.play(jeu.getPièce(0,4),4,4)
-//jeu.pat()
+
 jeu.play(jeu.getPièce(5,0),4,1)
-//jeu.pat()
-//console.log("test")
+
 jeu.play(jeu.getPièce(4,4),4,1)
 jeu.play(jeu.getPièce(6,0),4,1)
 jeu.play(jeu.getPièce(6,4),6,3)
 jeu.play(jeu.getPièce(6,6),7,7)
 jeu.play(jeu.getPièce(6,3),5,2)
+                                    //Roque
+/*jeu.play(jeu.getPièce(1,0),0,2)
+jeu.play(jeu.getPièce(5,2),4,1)
+jeu.play(jeu.getPièce(2,1),2,2)
+jeu.play(jeu.getPièce(6,7),5,5)
+jeu.play(jeu.getPièce(3,0),2,1)
+jeu.play(jeu.getPièce(0,7),1,7)*/
+                                    //Grand Roque
+//jeu.play(jeu.getPièce(4,0),2,0)
+                                    //Petit Roque
+//jeu.play(jeu.getPièce(4,0),6,0)
+/*
 jeu.play(jeu.getPièce(0,0),0,2)
 jeu.play(jeu.getPièce(5,2),4,1)
 jeu.play(jeu.getPièce(0,2),2,2)
@@ -514,11 +463,11 @@ jeu.play(jeu.getPièce(7,6),5,6)
 jeu.play(jeu.getPièce(7,1),3,1)
 jeu.play(jeu.getPièce(4,0),3,1)
 jeu.play(jeu.getPièce(2,4),2,3)
-//echec et mat
+                                    //echec et mat
 jeu.play(jeu.getPièce(7,0),7,6)
 jeu.play(jeu.getPièce(3,6),3,4)
 jeu.play(jeu.getPièce(5,6),3,6)
-
+                                    //pat
 /*jeu.play(jeu.getPièce(7,0),7,2)
 jeu.play(jeu.getPièce(3,6),3,4)
 jeu.play(jeu.getPièce(7,2),3,2)
@@ -527,8 +476,9 @@ jeu.play(jeu.getPièce(3,1),3,2)
 jeu.play(jeu.getPièce(3,7),2,7)
 jeu.play(jeu.getPièce(5,6),3,4)
 jeu.play(jeu.getPièce(2,7),1,7)
-/*jeu.play(jeu.getPièce(3,4),2,4)
+jeu.play(jeu.getPièce(3,4),2,4)
 jeu.play(jeu.getPièce(1,7),0,7)
 jeu.play(jeu.getPièce(2,4),1,5)*/
-jeu.affichBlanc()
-jeu.showDeath()
+
+//jeu.affichBlanc()
+//jeu.showDeath()

@@ -15,7 +15,7 @@ app.get('/connexion',function(req, res, next){
     res.sendFile(__dirname + '/assets/views/connexion.html');
 });
 
-app.get('/',(req, res, next)=>{
+app.get('/index',(req, res, next)=>{
     //let test = new Test();
     //test.testHello();
     res.sendFile(__dirname + '/assets/views/index.html');
@@ -24,6 +24,11 @@ app.get('/',(req, res, next)=>{
 app.get('/test',function(req, res, next){
     //moduleTest.a();
     res.sendFile(__dirname + '/assets/views/test.html');
+});
+
+app.get('/',function(req, res, next){
+    //moduleTest.a();
+    res.sendFile(__dirname + '/assets/views/Menu.html');
 });
 /*io.sockets.on('connection', (socket) =>{
     io.emit('Hello', 'A new connection on our website');
