@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="icon" href="img/icone.png">
+        <title>
+            ChessGame
+        </title>
+        <link rel="stylesheet"  href="css/inscription.css"/>
+    </head>
+    <body>
+        <h1>Shadow kings Chess</h1>
+        <div>
+            
+            <form name="inscription" id="inscription" class="login-form" method="POST">
+                <h2>Inscription</h2>
+                <p id="erreur"></p>
+                <div class="txtb"><input id="0" type="text" name="pseudo" placeholder="pseudo"></div>
+                <div class="txtb"><input id="1" type="text" name="nom" placeholder="nom"></div>
+                
+                <div class="txtb"> <input id="2" type="text" name="prenom" placeholder="prenom"></div>
+                <div class="txtb"><input id="3" type="password" name="password" placeholder="password"></div>
+                <div class="txtb"><input id="4" type="password" name="confirm password" placeholder="confirmer password"></div>
+
+                
+                
+                <input type="submit" class="logbtn" value="Envoyer" id="envoyer" disabled="true">
+                <a id="connexion" href="/">connexion</a>
+            </form>
+        </div>
+    </body>
+    <script src="js/jquery-3.4.1.js"></script>
+    <script src="js/inscription.js"></script>
+</html>

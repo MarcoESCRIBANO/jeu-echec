@@ -1,0 +1,144 @@
+@font-face {
+	font-family: "Harry Potter";
+	src: url('../polices/harrypotter-webfont.woff2') format('woff2'),
+		 url('../polices/harrypotter-webfont.woff') format('woff');
+	font-weight: normal;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: "face your fears";
+	src: url('../polices/dk_face_your_fears-webfont.woff2') format('woff2'),
+		 url('../polices/dk_face_your_fears-webfont.woff') format('woff');
+	font-weight: normal;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: "birth of a hero";
+	src: url('../polices/birth_of_a_hero-webfont.woff2') format('woff2'),
+		 url('../polices/birth_of_a_hero-webfont.woff') format('woff');
+	font-weight: normal;
+	font-style: normal;
+}
+
+html{
+
+    background-image: url(../img/fond.jpeg);
+	background-repeat: no-repeat;
+	-webkit-background-size: cover;
+  	-moz-background-size: cover;
+  	-o-background-size: cover;
+      background-size: cover;
+
+}
+html:before{
+    content: "";
+    position: fixed;
+    height: 100%; width: 100%;
+	margin: 0;
+    background-image: url(../img/fond.jpeg);
+	background-repeat: no-repeat;
+	-webkit-background-size: cover;
+  	-moz-background-size: cover;
+  	-o-background-size: cover;
+      background-size: cover;
+      z-index: -1;
+      -webkit-filter: blur(8px);
+      -webkit-background-size: cover; /* pour Chrome et Safari */
+      -moz-background-size: cover; /* pour Firefox */
+      -o-background-size: cover; /* pour Opera */
+      background-size: cover; /* version standardisée */
+}
+
+
+
+/*.title1{
+	width: 90vmin;
+	margin-left: auto;
+    margin-right: auto;
+	font-family: Harry Potter ;
+	margin-top: 6vmin;
+	text-align: center;
+	font-size: 15vmin;
+	color: white;
+	font-weight: normal;
+	text-shadow:  -0.17vmin 0 black, 0 0.17vmin black,
+	0.17vmin 0 black, 0 -0.17vmin black, 0 0 1vmin rgba(255,255,255,.5),0 0 2vmin rgba(255,255,255,1);/* -0.4vmin -0.4vmin black;*/
+	/*
+}
+*/
+
+/*.menu{
+	margin-left: auto;
+    margin-right: auto;
+	width: 37vmin;
+	margin-top: 29vmin;
+}*/
+
+
+.button{
+	margin-left: auto;
+    margin-right: auto;
+	margin-top: 3vmin;
+	color: rgb(255, 255, 255);
+    cursor: pointer;
+    padding: 1vmin;
+	font-size: 5vmin;
+	font-family: Harry Potter;
+	text-shadow:  -0.17vmin 0 black, 0 0.17vmin black,
+	0.17vmin 0 black, 0 -0.17vmin black;
+	font-weight: normal;
+    width: 15vmin;
+    height: 5vmin;
+	text-align: center;
+	box-shadow: inset 0 0 2vmin rgba(255,255,255,.5),0 0 2vmin rgba(255,255,255,1);
+    outline-color: rgba(255,255,255,0);
+	outline-offset: 25px;
+	border-radius: 0.9vmin;
+
+}
+
+.button:hover {
+	color: #000000;
+	text-shadow:  -0.17vmin 0 white, 0 0.17vmin white,
+	0.17vmin 0 white, 0 -0.17vmin white;/* -0.4vmin -0.4vmin black;*/
+	box-shadow: inset 0 0 2vmin rgba(255, 0, 0, 0.568) ,0 0 2vmin rgb(255, 0, 0);
+	outline-offset: 25px;
+	border-radius: 0.9vmin;
+}
+
+.button:active {
+	color: #ff0000;
+	
+}
+
+#règle{
+    margin-top: 6vmin;
+    position: relative;
+    margin-left: auto;
+    margin-right: auto;
+    width: 150vmin;
+    height: 78vmin;
+    box-shadow: inset 0 0 2vmin rgba(255,255,255,.5),0 0 2vmin rgba(255,255,255,1);
+    outline-color: rgba(255,255,255,0);
+	outline-offset: 25px;
+    border-radius: 0.9vmin;
+    color: rgb(255, 255, 255);
+    padding: 2vmin;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 3.2vmin;
+    overflow: scroll;
+    overflow-x: hidden;
+    font-weight: 500;
+    text-align: justify;
+    text-shadow:  -0.11vmin 0 black, 0 0.11vmin black,
+	0.11vmin 0 black, 0 -0.11vmin black;
+
+}
+
+hr{
+    margin-top: -3vmin;
+    margin-bottom: -1vmin;
+}
+

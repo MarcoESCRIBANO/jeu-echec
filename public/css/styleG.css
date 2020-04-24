@@ -1,0 +1,191 @@
+@font-face {
+	font-family: "Bad Behaviour";
+	src: url('../polices/bad_behaviour-webfont.woff2') format('woff2'),
+		 url('../polices/bad_behaviour-webfont.woff') format('woff');
+	font-weight: normal;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: "face your fears";
+	src: url('../polices/dk_face_your_fears-webfont.woff2') format('woff2'),
+		 url('../polices/dk_face_your_fears-webfont.woff') format('woff');
+	font-weight: normal;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: "birth of a hero";
+	src: url('../polices/birth_of_a_hero-webfont.woff2') format('woff2'),
+		 url('../polices/birth_of_a_hero-webfont.woff') format('woff');
+	font-weight: normal;
+	font-style: normal;
+}
+
+html{
+	margin: 0;
+	height: 100%;
+	background-image: url("../img/chessFond.jpg");
+	background-repeat: no-repeat;
+	-webkit-background-size: cover;
+  	-moz-background-size: cover;
+  	-o-background-size: cover;
+	  background-size: cover;
+
+}
+
+#echiquier {
+	border-collapse: collapse;
+	margin-left: 30vmin;
+	margin-top: 5vmin;
+	background-image: url("../img/bois.png");
+	background-repeat: no-repeat;
+	-webkit-background-size: cover;
+  	-moz-background-size: cover;
+  	-o-background-size: cover;
+	background-size: cover;
+	box-shadow: 0 0 4vmin rgba(255,255,255,.5),0 0 0.3vmin rgba(255,255,255,1);
+	border-radius: 0.9vmin;
+}
+
+
+.indice{
+	font-weight: bolder;
+	color: rgba(255, 255, 255, 0.822);
+	font-family: Bad Behaviour;
+	font-size: 7vmin;
+	font-weight: lighter;
+	width: 9vmin;
+}
+
+
+td {			
+	display: table-cell;
+	width: 9vmin;
+	height: 9vmin;
+	text-align: center;
+	border-radius: 0.2vmin;
+	
+}
+.caseBlanche{
+	background-image: url("../img/marbreBlanc1.jpg");
+	background-repeat: no-repeat;
+	-webkit-background-size: cover;
+  	-moz-background-size: cover;
+  	-o-background-size: cover;
+  	background-size: cover;
+}
+
+.caseNoir{
+	background-image: url("../img/marbreNoir.png");
+	background-repeat: no-repeat;
+	-webkit-background-size: cover;
+  	-moz-background-size: cover;
+  	-o-background-size: cover;
+  	background-size: cover;
+	
+	color: white;
+}
+
+img{
+	width: 6vmin;
+	height: 6vmin;
+}
+
+h3{
+	color: white;
+	position: absolute;
+	top: 48%;
+	left: 2%;
+	font-size: 4vmin;
+	text-shadow: /* -0.17vmin 0 black, 0 0.17vmin black,
+	0.17vmin 0 black, 0 -0.17vmin black, */0 0 1vmin rgba(255,255,255,.5)/*,0 0 2vmin rgba(255,255,255,1)*/;
+	font-family: face your fears;
+}
+
+#fin{
+	width: 90vmin;
+	position: absolute;
+	top: 41vmin;
+	left: 30vmin;
+	font-family: face your fears;
+	text-align: center;
+	font-size: 9vmin;
+	color: rgb(190, 0, 0);
+	font-weight: normal;
+	text-shadow:  /*-0.11vmin 0 rgb(255, 255, 255), 0 0.11vmin rgb(255, 255, 255),
+	0.11vmin 0 rgb(255, 255, 255), 0 -0.11vmin rgb(255, 255, 255),*/ 0 0 5vmin rgb(255, 255, 255),0 0 0.7vmin rgba(255,255,255,1);
+}
+
+.mort{
+	position: absolute;
+	left: 10vmin;
+	border-collapse: collapse;
+	/*box-shadow: 0 0 4vmin rgba(255,255,255,.5),0 0 0.3vmin rgba(255,255,255,1);
+	border-radius: 0.9vmin;*/
+}
+#pionsMortHaut{
+	top: 5vmin;
+}
+
+#pionsMortBas{
+	bottom: 5vmin;
+}
+
+.caseMort{
+	color: white;
+	display: table-cell;
+	text-align: center;
+	width: 5vmin;
+	height: 5vmin;
+}
+
+.piecesMorte{
+	width: 5vmin;
+	height: 5vmin;
+}
+
+#chronotime{
+	position: absolute;
+	top: 5vmin;
+	left: 5vmin;
+	color: white;
+	font-size: 5vmin;
+	font-family: birth of a hero;
+}
+
+.button{
+	position: absolute;
+	top: 59vmin;
+	left: 66vmin;
+	color: rgb(190, 0, 0);
+	cursor: pointer;
+	padding: 1vmin;
+	font-size: 7vmin;
+	font-family: face your fears;
+	text-shadow:  /*-0.11vmin 0 rgb(255, 255, 255), 0 0.11vmin rgb(255, 255, 255),
+	0.11vmin 0 rgb(255, 255, 255), 0 -0.11vmin rgb(255, 255, 255),*/ 0 0 5vmin rgb(255, 255, 255),0 0 0.7vmin rgba(255,255,255,1);
+	font-weight: normal;
+    width: 18vmin;
+    height: 9vmin;
+	text-align: center;
+	box-shadow: inset 0 0 2vmin rgba(255,255,255,.5),0 0 2vmin rgba(255,255,255,1);
+    outline-color: rgba(255,255,255,0);
+	outline-offset: 25px;
+	border-radius: 0.9vmin;
+
+}
+
+.button:hover {
+	color: #000000;
+	text-shadow:  -0.17vmin 0 white, 0 0.17vmin white,
+	0.17vmin 0 white, 0 -0.17vmin white;/* -0.4vmin -0.4vmin black;*/
+	box-shadow: inset 0 0 2vmin rgba(255, 0, 0, 0.568) ,0 0 2vmin rgb(255, 0, 0);
+	outline-offset: 25px;
+	border-radius: 0.9vmin;
+}
+
+.button:active {
+	color: #ff0000;
+	
+}
